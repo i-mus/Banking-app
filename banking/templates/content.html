@@ -1,0 +1,174 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<script>
+var subjectObject = {
+  "Ernakulam": {
+    "Aluva": [],
+    "Edappally": [],
+    "Kalamassery": []
+  },
+  "Malappuram": {
+    "Vengara": [],
+    "Tirur": []
+  },
+  "Kozhikode": {
+    "Palayam": [],
+    "Mavoor": [],
+    "Kappad": []
+  },
+  "Palakkad": {
+    "Sreekrishnapuram": [],
+    "Nenmara": [],
+    "Mannarkkad": []
+  },
+  "Kannur": {
+    "Muttom": [],
+    "Thalassery": [],
+    "Pinarayi": []
+  }
+}
+window.onload = function() {
+  var subjectSel = document.getElementById("subject");
+  var topicSel = document.getElementById("topic");
+
+  for (var x in subjectObject) {
+    subjectSel.options[subjectSel.options.length] = new Option(x, x);
+  }
+  subjectSel.onchange = function() {
+    //empty Chapters- and Topics- dropdowns
+    topicSel.length = 1;
+    //display correct values
+    for (var y in subjectObject[this.value]) {
+      topicSel.options[topicSel.options.length] = new Option(y, y);
+    }
+  }
+}
+</script>
+	<!-- banner -->
+	<div class="banner">
+		<div class="header">
+			<div class="container">
+				<div class="header-left">
+					<div class="w3layouts-logo">
+						<h1>
+							<a href="/">SBI</a>
+						</h1>
+					</div>
+					<div class="agileinfo-phone">
+						<p><i class="fa fa-volume-control-phone" aria-hidden="true"></i> +91 9526222222</p>
+					</div>
+					<div class="clearfix"> </div>
+				</div>
+				<div class="top-nav">
+						<nav class="navbar navbar-default">
+								<div class="navbar-header">
+									<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+								</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+								<ul class="nav navbar-nav">
+									<li><a href="/">Home</a></li>
+<!--									<li><a href="#">Register</a></li>-->
+									<li class="dropdown">
+										<a href="" class="dropdown-toggle" data-hover="Pages" data-toggle="dropdown">Branches <b class="caret"></b></a>
+										<ul class="dropdown-menu">
+											<li><a href="https://www.wikidata.org/wiki/Q65986181">Ernakulam</a></li>
+											<li><a href="https://www.wikidata.org/wiki/Q65985395">Malappuram</a></li>
+											<li><a href="https://www.wikidata.org/wiki/Q65956016">Kozhikode</a></li>
+											<li><a href="https://www.wikidata.org/wiki/Q65956048">Palakkad</a></li>
+											<li><a href="https://www.wikidata.org/wiki/Q65985297">Kannur</a></li>
+
+										</ul>
+									</li>
+									{% if user.is_authenticated %}
+									<li><a href="{% url 'credentials:logout' %}">Logout</a></li>
+									{% else %}
+									<li><a href="{% url 'credentials:register' %}">Register</a></li>
+									<li><a href="{% url 'credentials:login' %}">Login</a></li>
+									{% endif %}
+								</ul>
+								<div class="clearfix"> </div>
+							</div>
+						</nav>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+		<div class="wthree-banner-info">
+			<div class="container">
+				<h2>Welcome {{user.username}}</h2>
+			</div>
+		</div>
+	</div>
+<div class="container text-center" style="margin-top:3%;">
+	<div id="box">
+  <span id="button" class="btn btn-primary">Create Account</span>
+  <form action="{% url 'bankapp:success' %}" id="form" style="margin-top:1%;" method="post">
+	  {% csrf_token %}
+	  <label>Name</label>
+	  <p><input type="text" name="Name" placeholder="Name" ></p>
+	  <label>Date of Birth</label>
+      <p><input type="date" placeholder="DOB" ></p>
+	  <label>Age</label>
+	  <p><input type="number" placeholder="Age" ></p>
+	  <label>Gender</label><br>
+	  <input type="radio" name="gender" id="male">
+	  <label for="male">Male</label>
+	  <input type="radio" name="gender" id="female">
+	  <label for="female">Female</label><br>
+	  <label>PhoneNo</label>
+	  <p><input type="text" name="Phone" placeholder="Phone"></p>
+	  <label>MailID</label>
+	  <p><input type="email" name="mailid" placeholder="email"></p>
+	  <label>Address</label>
+	  <p><input type="text" name="address"></p>
+	  <label>Select District</label>
+	  <select name="subject" id="subject">
+    <option value="" selected="selected">Select District</option>
+  </select>
+  <br><br>
+	  <label>Select Branch</label>
+<select name="topic" id="topic">
+    <option value="" selected="selected">Please select District first</option>
+  </select>
+  <br><br>
+
+	  <label>Account Type</label>
+	  <select>
+		  <option value="" selected="selected">Select One...</option>
+		  <option>Savings</option>
+		  <option>Current</option>
+	  </select>
+	  <br><br>
+	  <label>Materials Needed</label><br>
+	  <input type="checkbox" name="materials">
+	  <label>Debit Card</label>
+	  <input type="checkbox" name="materials">
+	  <label>Credit Card</label>
+	  <input type="checkbox" name="materials">
+	  <label>Check Book</label>
+
+    <p><input class="btn btn-warning" type="submit" value="Create" ></p>
+  </form>
+
+	</div>
+</div>
+<br>
+<div class="text-center">
+	<a href="{% url 'credentials:logout' %}"><button class="btn btn-danger">Logout</button></a>
+</div>
+
+<script>
+	$("#button").click(function () {
+  $("#box form").toggle("slow");
+  return false;
+});
+</script>
+{% endblock %}
