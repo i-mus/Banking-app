@@ -19,4 +19,7 @@ class RestrictedView(LoginRequiredMixin, TemplateView):
 
 @login_required
 def success(request):
-    return render(request, 'success.html')
+    if request.method == 'POST':
+        name = request.POST['Name']
+        mail = request.POST['mailid']
+    return render(request, 'success.html', {'name2': name , 'mail':mail})
